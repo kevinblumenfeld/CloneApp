@@ -104,7 +104,7 @@ function Import-AzureADApp {
     if ($ConsentAction) {
         Write-Host 'Consent via Browser/URL requires adding the ReplyUrl, https://portal.azure.com to the new app' -ForegroundColor Cyan
         do {
-            $Agree = Read-Host 'Okay to add https://portal.azure.com as a ReplyUrl (Y/N)'
+            $Agree = Read-Host 'Okay to add https://portal.azure.com as a ReplyUrl? (Y/N)'
         } until ($Agree -match 'Y|N')
         if ($Agree -eq 'N') { continue }
         $NewAppSplat['ReplyUrls'] = 'https://portal.azure.com'
