@@ -5,7 +5,9 @@ function Export-AzureADApp {
 
     .DESCRIPTION
     Export Azure AD App name & API permissions to an xml
-    Can be used to create an app with the same permissions and settings
+
+    This function outputs and xml, use that xml with Import-AzureADApp function to
+    create a new app with the same API permissions
 
     .PARAMETER Name
     Name of the App to export
@@ -16,18 +18,18 @@ function Export-AzureADApp {
     use either Name or ObjectId, not both
 
     .PARAMETER Path
-    Path where the script will save the XML of the exported App
+    Path where the script will save the xml of the exported App
 
     .EXAMPLE
-    Export-AzureADApp -ObjectId f230aa0b-9832-431c-a879-a40e57b71d79 -Path C:\temp\apps
+    Export-AzureADApp -ObjectId f230aa0b-9832-431c-a879-a40e57b71d79 -Path C:\temp\
 
     .EXAMPLE
-    Export-AzureADApp -Name TestApp -Path C:\temp\apps
+    Export-AzureADApp -Name TestApp -Path C:\temp\
 
     .NOTES
     Output from this function will look like this:
 
-    AzureAD App and API Permissions for App Test12345, exported to: C:\Scripts\Test12345-20200807-0519.xml
+    AzureAD App and API Permissions for App Test12345, exported to: C:\temp\Test12345-20200807-0519.xml
 
     The xml file can be used to import via the local file or can be copied to a GIST
 
@@ -92,8 +94,8 @@ function Export-AzureADApp {
         $App['API'][$Access.ResourceAppId]['ResourceList'] = $RLObj
     }
 
-    $XMLPath = (Join-Path -Path $Path -ChildPath ('{0}-{1}.xml' -f $SourceApp.DisplayName, [DateTime]::Now.ToString('yyyyMMdd-hhmm')) )
-    $App | Export-Clixml $XMLPath -Force
+    $xmlPath = (Join-Path -Path $Path -ChildPath ('{0}-{1}.xml' -f $SourceApp.DisplayName, [DateTime]::Now.ToString('yyyyMMdd-hhmm')) )
+    $App | Export-Clixml $xmlPath -Force
     Write-Host "`r`nAzureAD App and API Permissions for App $($SourceApp.DisplayName), exported to: " -ForegroundColor Cyan -NoNewline
-    Write-Host "$XMLPath`r`n" -ForegroundColor Yellow
+    Write-Host "$xmlPath`r`n" -ForegroundColor Yellow
 }

@@ -10,8 +10,8 @@ function Import-AzureADApp {
     The owner of the application. For convenience, should be the owner
     that can grant admin consent of the requested API permissions
 
-    .PARAMETER XMLPath
-    Filesystem path to the XML created by Export-AzureADAppAndPermissions
+    .PARAMETER xmlPath
+    Filesystem path to the xml created by Export-AzureAD
     Choose this or the Github paramters to grab the xml from a GIST
 
     .PARAMETER GithubUsername
@@ -48,7 +48,7 @@ function Import-AzureADApp {
 
     .EXAMPLE
     Import-AzureADApp -Owner admin@contoso.onmicrosoft.com `
-                      -XMLPath C:\Scripts\TestApp-20200808-0349.xml
+                      -xmlPath C:\Scripts\TestApp-20200808-0349.xml
                       -Name NewApp01 -SecretDurationYears 1 -ConsentAction OutputUrl
 
     .NOTES
@@ -56,10 +56,12 @@ function Import-AzureADApp {
 
     Example:
 
-    ApplicationId : adecd1ee-abcd-4c66-bcf1-4bfb0b610818
-    TenantId      : f8f6d77c-abcd-4a11-ae04-39bfaff70e00
-    ObjectId      : c57f335d-abcd-492e-bc90-6cd1a85eecd6
-    Secret        : pA00W2xLLabcdZLL5g8dS85HiXAjuI1UFKnwdsAlpAk=
+    DisplayName   : AppTwo
+    ApplicationId : e8f3a6cb-f3c1-4a7d-8cb2-6a72d99816fa
+    TenantId      : a334d325-ce6e-49be-bea1-b2058b125a8e
+    ObjectId      : b559ab26-31bf-4462-97e4-afc80dbb51e5
+    Owner         : demo@contoso.onmicrosoft.com
+    Secret        : kHOPOoOWL++Jir0yiYD3SN7bcIoYzvS+XeQJjju/Ef4=
 
 
     #>
@@ -75,7 +77,7 @@ function Import-AzureADApp {
         [Parameter(Mandatory, ParameterSetName = 'FileSystem')]
         [string]
         [ValidateScript( { Test-Path $_ })]
-        $XMLPath,
+        $xmlPath,
 
         [Parameter(Mandatory, ParameterSetName = 'GIST')]
         [string]
@@ -127,7 +129,7 @@ function Import-AzureADApp {
         continue
     }
 
-    if ($PSCmdlet.ParameterSetName -eq 'FileSystem') { $App = Import-Clixml $XMLPath }
+    if ($PSCmdlet.ParameterSetName -eq 'FileSystem') { $App = Import-Clixml $xmlPath }
     else {
         try {
             $Tempfilepath = Join-Path -Path $Env:TEMP -ChildPath ('{0}.xml' -f [guid]::newguid().guid)
