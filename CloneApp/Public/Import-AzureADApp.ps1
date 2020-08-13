@@ -133,7 +133,7 @@ function Import-AzureADApp {
     else {
         try {
             $Tempfilepath = Join-Path -Path $Env:TEMP -ChildPath ('{0}.xml' -f [guid]::newguid().guid)
-            (Get-GitHubGist -Username $GithubUserName -Filename $GistFilename)[0].content | Set-Content -Path $Tempfilepath -ErrorAction Stop
+            (Get-CloneGist -Username $GithubUserName -Filename $GistFilename)[0].content | Set-Content -Path $Tempfilepath -ErrorAction Stop
             $App = Import-Clixml $Tempfilepath
         }
         catch {

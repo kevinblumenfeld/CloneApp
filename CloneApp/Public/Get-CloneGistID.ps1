@@ -1,4 +1,4 @@
-function Get-GitHubGistID {
+function Get-CloneGistID {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]

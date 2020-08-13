@@ -1,4 +1,4 @@
-function Get-GitHubGist {
+function Get-CloneGist {
     <#
     .SYNOPSIS
     Returns all GISTs with the name you specify in a named GitHub account
@@ -15,10 +15,10 @@ function Get-GitHubGist {
     This functions returns each that match the filename specified with this parameter
 
     .EXAMPLE
-    Get-GitHubGist kevinblumenfeld -FileName test.xml
+    Get-CloneGist kevinblumenfeld -FileName test.xml
 
     .EXAMPLE
-    (Get-GitHubGist kevinblumenfeld -FileName test.xml)[0]
+    (Get-CloneGist kevinblumenfeld -FileName test.xml)[0]
     the most recent GIST named test.xml
 
     .NOTES
@@ -35,7 +35,7 @@ function Get-GitHubGist {
         [string]
         $Filename
     )
-    $IdList = Get-GitHubGistID -Username $Username -Filename $Filename
+    $IdList = Get-CloneGistID -Username $Username -Filename $Filename
     foreach ($Id in $IdList) {
         $Params = @{
             Uri    = "https://api.github.com/gists/${Id}"
