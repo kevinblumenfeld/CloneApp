@@ -184,7 +184,7 @@ function Import-AzureADApp {
         $Params = @{
             ObjectId            = $TargetApp.ObjectId
             EndDate             = $Date.AddYears($SecretDurationYears)
-            CustomKeyIdentifier = "{0}-{1}" -f $TargetApp.Displayname, $Date.ToString("yyyyMMddTHHmm")
+            CustomKeyIdentifier = $Date.ToString("yyyyMMdd_HHmmss")
         }
         $SecretResult = New-AzureADApplicationPasswordCredential @Params
         $Output['Secret'] = $SecretResult.value
