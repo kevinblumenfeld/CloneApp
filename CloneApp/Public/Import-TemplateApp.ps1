@@ -1,5 +1,53 @@
 function Import-TemplateApp {
+    <#
+        .SYNOPSIS
+        To be used with functions from Posh365
 
+        .DESCRIPTION
+        To be used with functions from Posh365
+
+        Install-Module Posh365
+        Register-GraphApplication -Tenant Contoso -App Intune
+
+        # The registration is a one-time thing.
+        # Once it is complete, use the below command each time to connect to Graph
+        Connect-PoshGraph -Tenant ContosoIntune
+
+        .PARAMETER Owner
+        Parameter description
+
+        .PARAMETER xmlPath
+        Parameter description
+
+        .PARAMETER GithubUsername
+        Parameter description
+
+        .PARAMETER GistFilename
+        Parameter description
+
+        .PARAMETER SecretDurationYears
+        Parameter description
+
+        .PARAMETER Name
+        Parameter description
+
+        .PARAMETER ConsentAction
+        Parameter description
+
+        .EXAMPLE
+        Install-Module Posh365
+        Register-GraphApplication -Tenant Contoso -App Intune
+
+        # The registration is a one-time thing.
+        # Once it is complete, use the below command each time to connect to Graph
+        Connect-PoshGraph -Tenant ContosoIntune
+
+
+        .NOTES
+        This really should be a private function. Eventually, I will use:
+            & modulename { commands to be ran in the module scope }
+
+            #>
     [cmdletbinding(DefaultParameterSetName = 'PlaceHolder')]
     param (
 
