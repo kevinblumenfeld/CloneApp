@@ -43,7 +43,7 @@ function Import-TemplateApp {
     Write-Host "Finding ObjectId for owner: $Owner" -ForegroundColor Cyan -NoNewline
     try {
         $AppOwner = Get-AzureADUser -ObjectId $Owner -ErrorAction Stop
-        Write-Host " Found" -ForegroundColor Green
+        Write-Host " Found`r`n" -ForegroundColor Green
     }
     catch {
         Write-Host " Not Found. Halting script" -ForegroundColor Red
@@ -119,17 +119,14 @@ function Import-TemplateApp {
     }
 
     if ($ConsentAction -match 'OutputUrl|Both') {
-        Write-Host "Grant Admin Consent by logging in as $($Owner.Address) here:`r`n" -ForegroundColor Cyan
+        Write-Host "The link below will open automatically.  Grant admin consent by logging in as $($Owner.Address):`r`n"  -ForegroundColor Cyan -BackgroundColor White
         $ConsentURL = 'https://login.microsoftonline.com/{0}/v2.0/adminconsent?client_id={1}&state=12345&redirect_uri={2}&scope={3}&prompt=admin_consent' -f @(
             $Tenant.ObjectID, $TargetApp.AppId, 'https://portal.azure.com/', 'https://graph.microsoft.com/.default')
 
         Write-Host "$ConsentURL" -ForegroundColor Green
     }
-    [PSCustomObject]$Output
-
     if ($ConsentAction -match 'OpenBrowser|Both') {
-        Write-Host "Opening your browser now. Once open, sign in with the same Global Admin that you just used to login to Azure AD" -ForegroundColor Cyan
-        Write-Host "Once open, sign in with the same Global Admin that you just used to login to Azure AD" -ForegroundColor Cyan
         Start-Process $ConsentURL
     }
+    [PSCustomObject]$Output
 }
