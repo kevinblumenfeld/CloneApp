@@ -127,5 +127,9 @@ function Import-TemplateApp {
     }
     [PSCustomObject]$Output
 
-    if ($ConsentAction -match 'OpenBrowser|Both') { Start-Process $ConsentURL }
+    if ($ConsentAction -match 'OpenBrowser|Both') {
+        Write-Host "Opening your browser now. Once open, sign in with the same Global Admin that you just used to login to Azure AD" -ForegroundColor Cyan
+        Write-Host "Once open, sign in with the same Global Admin that you just used to login to Azure AD" -ForegroundColor Cyan
+        Start-Process $ConsentURL
+    }
 }
