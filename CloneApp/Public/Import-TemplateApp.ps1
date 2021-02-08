@@ -82,7 +82,12 @@ function Import-TemplateApp {
         [Parameter(ParameterSetName = 'GIST')]
         [ValidateSet('OpenBrowser', 'OutputUrl', 'Both')]
         [string]
-        $ConsentAction
+        $ConsentAction,
+
+        [Parameter(Mandatory, ParameterSetName = 'FileSystem')]
+        [Parameter(Mandatory, ParameterSetName = 'GIST')]
+        [switch]
+        $GCCHigh
     )
     $Date = Get-Date
     $NewAppSplat = @{ }
@@ -167,13 +172,25 @@ function Import-TemplateApp {
     }
 
     if ($ConsentAction -match 'OutputUrl|Both') {
-        Write-Host "The link below will open automatically.  Grant admin consent by logging in as $($Owner.Address):`r`n"  -ForegroundColor Cyan -BackgroundColor White
-        $ConsentURL = 'https://login.microsoftonline.com/{0}/v2.0/adminconsent?client_id={1}&state=12345&redirect_uri={2}&scope={3}&prompt=admin_consent' -f @(
-            $Tenant.ObjectID, $TargetApp.AppId, 'https://portal.azure.com/', 'https://graph.microsoft.com/.default')
+        Write-Host "`r`n"
+        Write-Host "The link below will open automatically.  Grant admin consent by logging in as $($Owner.Address): "  -ForegroundColor Black -BackgroundColor White
+        Write-Host "`r`n"
+        if ($GCCHigh) {
+            $ConsentURL = 'https://login.microsoftonline.us/{0}/v2.0/adminconsent?client_id={1}&state=12345&redirect_uri={2}&scope={3}&prompt=admin_consent' -f @(
+                $Tenant.ObjectID, $TargetApp.AppId, 'https://portal.azure.us/', 'https://graph.microsoft.com/.default')
+
+        }
+        else {
+            $ConsentURL = 'https://login.microsoftonline.com/{0}/v2.0/adminconsent?client_id={1}&state=12345&redirect_uri={2}&scope={3}&prompt=admin_consent' -f @(
+                $Tenant.ObjectID, $TargetApp.AppId, 'https://portal.azure.com/', 'https://graph.microsoft.com/.default')
+
+        }
 
         Write-Host "$ConsentURL" -ForegroundColor Green
     }
     if ($ConsentAction -match 'OpenBrowser|Both') {
+        Write-Host "`r`nSleeping 20 seconds prior to opening link in your browser.  Stand by..." -ForegroundColor Yellow
+        Start-Sleep -Seconds 20
         Start-Process $ConsentURL
     }
     [PSCustomObject]$Output
